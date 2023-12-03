@@ -1,30 +1,3 @@
-// const userService = require('../services/userService');
-
-// async function register(req, res) {
-//     const { emailOrPhone, username, password } = req.body;
-
-//     try {
-//         const result = await userService.register(emailOrPhone, username, password);
-//         res.status(201).json({ message: 'Registrasi berhasil', result });
-//     } catch (error) {
-//         console.error('Error registering user:', error.message);
-//         res.status(500).json({ error: 'Gagal melakukan registrasi' });
-//     }
-// }
-
-// async function login(req, res) {
-//     const { emailOrPhone, password } = req.body;
-
-//     try {
-//         const result = await userService.login(emailOrPhone, password);
-//         res.status(200).json({ message: 'Login berhasil', result });
-//     } catch (error) {
-//         console.error('Error logging in user:', error.message);
-//         res.status(401).json({ error: 'Email/No HP atau password salah' });
-//     }
-// }
-
-// Controllers/authController.js
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const prisma = require('../config/prisma');
@@ -42,7 +15,7 @@ const register = async (req, res) => {
         }
       });
   
-      res.json({ user, message: 'User registered successfully' });
+      res.json({ user, message: 'Registrasi anda berhasil' });
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Internal Server Error' });
@@ -58,18 +31,18 @@ const login = async (req, res) => {
     });
 
     if (!user) {
-      return res.status(401).json({ error: 'Invalid credentials' });
+      return res.status(401).json({ error: 'Masukkan data dengan benar' });
     }
 
     const passwordMatch = await bcrypt.compare(password, user.password);
 
     if (!passwordMatch) {
-      return res.status(401).json({ error: 'Invalid credentials' });
+      return res.status(401).json({ error: 'Password Anda Salah' });
     }
 
     const token = jwt.sign({ userId: user.id }, 'secret_key', { expiresIn: '1h' });
 
-    res.json({ token, message: 'Login successful' });
+    res.json({ token, message: 'Login berhasil' });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal Server Error' });
