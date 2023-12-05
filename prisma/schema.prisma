@@ -16,3 +16,13 @@ model User {
   username     String
   password     String
 }
+
+model Contact {
+  id          Int      @id @default(autoincrement())
+  firstName   String
+  lastName    String
+  email       String
+  mobileNumber String
+  message     String
+  createdAt   DateTime @default(now())
+}

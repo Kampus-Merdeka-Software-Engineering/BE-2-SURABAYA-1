@@ -5,7 +5,9 @@ const prisma = require('../config/prisma');
 const register = async (req, res) => {
     try {
       const { email_or_phone, username, password } = req.body;
+      console.log('Password Before Hashing:', password);
       const hashedPassword = await bcrypt.hash(password, 10);
+      console.log('Hashed Password:', hashedPassword);
   
       const user = await prisma.user.create({
         data: {
@@ -26,10 +28,13 @@ const login = async (req, res) => {
   try {
     const { username, password } = req.body;
 
-    const user = await prisma.user.findUnique({
+    const user = await prisma.user.findFirst({
       where: { username },
     });
 
+    console.log('Received Password:', password);
+    console.log('User Password from Database:', user.password);
+    
     if (!user) {
       return res.status(401).json({ error: 'Masukkan data dengan benar' });
     }

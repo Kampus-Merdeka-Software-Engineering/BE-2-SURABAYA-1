@@ -8,8 +8,10 @@ app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 
 const userRoute = require('./routes/userRoute')
+const contactRoute = require('./routes/contactRoute')
 
 app.use(userRoute)
+app.use(contactRoute)
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
