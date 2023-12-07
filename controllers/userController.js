@@ -4,7 +4,7 @@ const prisma = require('../config/prisma');
 
 const register = async (req, res) => {
     try {
-      const { email_or_phone, username, password } = req.body;
+      const { email_or_phone, password } = req.body;
       console.log('Password Before Hashing:', password);
       const hashedPassword = await bcrypt.hash(password, 10);
       console.log('Hashed Password:', hashedPassword);
@@ -12,7 +12,6 @@ const register = async (req, res) => {
       const user = await prisma.user.create({
         data: {
           email_or_phone,
-          username,
           password: hashedPassword,
         }
       });
@@ -26,10 +25,10 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
   try {
-    const { username, password } = req.body;
+    const { email_or_phone, password } = req.body;
 
     const user = await prisma.user.findFirst({
-      where: { username },
+      where: { email_or_phone },
     });
 
     console.log('Received Password:', password);
