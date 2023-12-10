@@ -35,18 +35,18 @@ const login = async (req, res) => {
     console.log('User Password from Database:', user.password);
     
     if (!user) {
-      return res.status(401).json({ error: 'Masukkan data dengan benar' });
+      return res.status(401).json({ error: 'Enter data correctly' });
     }
 
     const passwordMatch = await bcrypt.compare(password, user.password);
 
     if (!passwordMatch) {
-      return res.status(401).json({ error: 'Password Anda Salah' });
+      return res.status(401).json({ error: 'Your Password is Incorrect' });
     }
 
     const token = jwt.sign({ userId: user.id }, 'secret_key', { expiresIn: '1h' });
 
-    res.json({ token, message: 'Login berhasil' });
+    res.json({ token, message: 'Login Successful' });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal Server Error' });
